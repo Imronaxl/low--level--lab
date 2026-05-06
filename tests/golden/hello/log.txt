@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/lab4-compiler/tools/run.py", line 94, in <module>
+    run_program(binary_file, input_file, debug=debug_mode)
+  File "/workspace/lab4-compiler/tools/run.py", line 40, in run_program
+    sim.tick()
+  File "/workspace/lab4-compiler/tools/../src/processor/simulator.py", line 238, in tick
+    if not cu.fetch_decode():
+           ^^^^^^^^^^^^^^^^^
+  File "/workspace/lab4-compiler/tools/../src/processor/simulator.py", line 57, in fetch_decode
+    raise RuntimeError(f"Нет микрокода для opcode {opcode_val}")
+RuntimeError: Нет микрокода для opcode 0

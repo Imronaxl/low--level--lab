@@ -1,0 +1,9 @@
+{
+    "name": "euler4_scalar",
+    "description": "Euler #4 скалярная версия",
+    "source": "euler4_scalar.alg",
+    "input_file": "input.txt",
+    "output_file": "output.golden",
+    "log_file": "log.golden",
+    "binary_file": "machine.bin"
+}

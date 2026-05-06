@@ -1,0 +1,9 @@
+{
+    "name": "hello",
+    "description": "Вывод Hello, World!",
+    "source": "hello.alg",
+    "input_file": "input.txt",
+    "output_file": "output.golden",
+    "log_file": "log.golden",
+    "binary_file": "machine.bin"
+}

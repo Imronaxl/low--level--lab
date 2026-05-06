@@ -1,0 +1,8 @@
+{
+    "description": "Double Precision - арифметика 64 бит",
+    "source": "source.alg",
+    "input": null,
+    "expected_output": "1 -1\n",
+    "max_ticks": 5000,
+    "notes": "Тест арифметики двойной точности (high=1, low=-1/0xFFFFFFFF)"
+}

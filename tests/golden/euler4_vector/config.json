@@ -1,0 +1,8 @@
+{
+    "description": "Euler Problem 4 (Vector) - наибольший палиндром с векторизацией",
+    "source": "source.alg",
+    "input": null,
+    "expected_output": "906609\n",
+    "max_ticks": 500000,
+    "notes": "Векторная версия алгоритма варианта для демонстрации ускорения"
+}
