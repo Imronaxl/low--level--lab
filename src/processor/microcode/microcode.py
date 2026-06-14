@@ -54,6 +54,10 @@ class MicroOp(IntEnum):
     JL = auto()  # Если SF=1, PC <- target
     JGE = auto()  # Если SF=0, PC <- target
 
+    # Память (данные)
+    MEM_LOAD = auto()  # MDR <- MEM[decoded_imm]
+    MEM_STORE = auto()  # MEM[decoded_imm] <- R[rd]
+
     # Специальные
     HALT_OP = auto()  # Остановка процессора
 
@@ -241,18 +245,16 @@ MICROCODE = {
     0x20: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
-        MicroOp.DECODE,  # Извлекает адрес
-        MicroOp.FETCH_ADDR,  # MAR <- addr (повторное использование)
-        MicroOp.FETCH_MEM,  # MDR <- MEM[MAR]
+        MicroOp.DECODE,
+        MicroOp.MEM_LOAD,  # MDR <- MEM[decoded_imm]
         MicroOp.REG_WRITE_MEM,  # R[rd] <- MDR
     ],
     # STORE [addr], rs (0x21) - запись в память
     0x21: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
-        MicroOp.DECODE,  # Извлекает адрес и rs
-        MicroOp.REG_READ_A,  # A <- R[rs]
-        MicroOp.MEM_WRITE,  # MEM[MAR] <- A
+        MicroOp.DECODE,
+        MicroOp.MEM_STORE,  # MEM[decoded_imm] <- R[rd]
     ],
     # === Ввод-вывод ===
     # OUT port, rs (0x41) - вывод в порт
@@ -272,8 +274,8 @@ MICROCODE = {
         MicroOp.REG_WRITE_MEM,
     ],
     # === Векторные инструкции ===
-    # VLOAD vd, [addr] (0x50) - векторная загрузка
-    0x50: [
+    # VLOAD vd, [addr] (0x58) - векторная загрузка
+    0x58: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
@@ -281,16 +283,16 @@ MICROCODE = {
         MicroOp.FETCH_MEM,
         MicroOp.VREG_WRITE,
     ],
-    # VSTORE [addr], vs (0x51) - векторная запись
-    0x51: [
+    # VSTORE [addr], vs (0x59) - векторная запись
+    0x59: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
         MicroOp.VREG_READ_A,
         MicroOp.MEM_WRITE,
     ],
-    # VADD vd, vs, vt (0x52) - векторное сложение
-    0x52: [
+    # VADD vd, vs, vt (0x5A) - векторное сложение
+    0x5A: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
@@ -299,8 +301,8 @@ MICROCODE = {
         MicroOp.VALU_ADD,
         MicroOp.VREG_WRITE,
     ],
-    # VSUB vd, vs, vt (0x53) - векторное вычитание
-    0x53: [
+    # VSUB vd, vs, vt (0x5B) - векторное вычитание
+    0x5B: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
@@ -309,8 +311,8 @@ MICROCODE = {
         MicroOp.VALU_SUB,
         MicroOp.VREG_WRITE,
     ],
-    # VMUL vd, vs, vt (0x54) - векторное умножение
-    0x54: [
+    # VMUL vd, vs, vt (0x5C) - векторное умножение
+    0x5C: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
@@ -319,18 +321,18 @@ MICROCODE = {
         MicroOp.VALU_MUL,
         MicroOp.VREG_WRITE,
     ],
-    # VDIV vd, vs, vt (0x55) - векторное деление
-    0x55: [
+    # VDIV vd, vs, vt (0x5D) - векторное деление
+    0x5D: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
         MicroOp.VREG_READ_A,
         MicroOp.VREG_READ_B,
-        MicroOp.VALU_ADD,  # Упрощенно пока как ADD
+        MicroOp.VALU_ADD,
         MicroOp.VREG_WRITE,
     ],
-    # VCMP vd, vs, vt (0x56) - векторное сравнение
-    0x56: [
+    # VCMP vd, vs, vt (0x5E) - векторное сравнение
+    0x5E: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,
@@ -339,8 +341,8 @@ MICROCODE = {
         MicroOp.ALU_CMP,
         MicroOp.ALU_UPDATE_FLAGS,
     ],
-    # VSET vd, imm (0x57) - установка вектора
-    0x57: [
+    # VSET vd, imm (0x5F) - установка вектора
+    0x5F: [
         MicroOp.FETCH_ADDR,
         MicroOp.FETCH_MEM,
         MicroOp.DECODE,

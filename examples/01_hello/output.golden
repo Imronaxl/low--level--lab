@@ -1,0 +1,18 @@
+Output:
+Hello, World!
+
+==================================================
+
+Final Register State:
+  R0: 10 (0x0000000A)
+  R1: 0 (0x00000000)
+  R2: 0 (0x00000000)
+  R3: 0 (0x00000000)
+
+Vector Registers:
+  V0: [0, 0, 0, 0]
+  V1: [0, 0, 0, 0]
+  V2: [0, 0, 0, 0]
+  V3: [0, 0, 0, 0]
+
+Flags: Z=False, N=False, C=False, V=False

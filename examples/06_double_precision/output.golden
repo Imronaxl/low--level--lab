@@ -1,0 +1,20 @@
+Output:
+Result high: 1
+, low: 65536
+
+
+==================================================
+
+Final Register State:
+  R0: 10 (0x0000000A)
+  R1: 1 (0x00000001)
+  R2: 54 (0x00000036)
+  R3: 0 (0x00000000)
+
+Vector Registers:
+  V0: [0, 0, 0, 0]
+  V1: [0, 0, 0, 0]
+  V2: [0, 0, 0, 0]
+  V3: [0, 0, 0, 0]
+
+Flags: Z=False, N=False, C=False, V=False

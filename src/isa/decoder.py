@@ -29,8 +29,8 @@ class Decoder:
             opcode = OpCode(byte0)
             return Instruction(opcode=opcode, operands=[port, reg], mod=0), 3
 
-        # Векторные инструкции (0x50-0x5F)
-        if 0x50 <= byte0 <= 0x5F:
+        # Векторные инструкции (0x58-0x5F)
+        if 0x58 <= byte0 <= 0x5F:
             if pc + 1 >= len(code):
                 raise ValueError("Недостаточно байтов для векторной инструкции")
             vec_byte = code[pc + 1]

@@ -163,7 +163,11 @@ class Parser:
 
     def parse_stmt(self):
         """Разбирает оператор."""
-        if self.match(TokenType.IF):
+        if self.match(TokenType.LET):
+            return self.parse_var_decl()
+        elif self.match(TokenType.INT) or self.match(TokenType.CHAR):
+            return self.parse_typed_var_decl()
+        elif self.match(TokenType.IF):
             return self.parse_if_stmt()
         elif self.match(TokenType.WHILE):
             return self.parse_while_stmt()
@@ -279,6 +283,11 @@ class Parser:
                     self.advance()
                     expr_val = self.parse_expr()
                     update = BinOp(op="-", left=Ident(name_token.value), right=expr_val)
+                elif self.match(TokenType.ASSIGN):
+                    # i = expr
+                    self.advance()
+                    expr_val = self.parse_expr()
+                    update = Assign(target=Ident(name_token.value), value=expr_val)
                 else:
                     # Просто выражение
                     update = self.parse_expr_rest(Ident(name_token.value))
@@ -441,10 +450,16 @@ class Parser:
             return UnaryOp(op=op, operand=operand)
         return self.parse_primary()
 
+    @staticmethod
+    def _parse_int(value: str) -> int:
+        if value.startswith("0x") or value.startswith("0X"):
+            return int(value, 16)
+        return int(value)
+
     def parse_primary(self) -> Expr:
         if self.match(TokenType.NUMBER):
             token = self.advance()
-            return Num(value=int(token.value))
+            return Num(value=self._parse_int(token.value))
 
         if self.match(TokenType.STRING):
             token = self.advance()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Симулятор процессора: выполнение бинарного машинного кода
-Использование: python -m tools.run <program.bin> [input.txt] [--debug] [--log output.log]
+Использование: python tools/run.py <program.bin> [input.txt] [--debug] [--log output.log]
 """
 
 import os
@@ -11,6 +11,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from processor.simulator import Simulator
+from utils.image import read_image
 
 
 def run_program(
@@ -22,13 +23,19 @@ def run_program(
 ):
     """Запуск программы на симуляторе процессора"""
 
-    # Чтение бинарного файла
-    with open(binary_path, "rb") as f:
-        machine_code = f.read()
+    # Чтение бинарного образа
+    image = read_image(binary_path)
 
     # Создание симулятора
     sim = Simulator()
-    sim.load_program(machine_code)
+    sim.load_program(image["code"])
+
+    # Загрузка данных из образа в память
+    if image["data"]:
+        for i, byte in enumerate(image["data"]):
+            addr = 0x1000 + i
+            if addr < len(sim.datapath.memory):
+                sim.datapath.memory[addr] = byte
 
     # Загрузка входных данных (если есть)
     if input_path and os.path.exists(input_path):
@@ -47,18 +54,11 @@ def run_program(
         sim.tick()
         tick += 1
 
-        # Логгируем каждое состояние для golden тестов
         state = sim.datapath.state
-        instr_info = (
-            sim._get_current_instruction_info()
-            if hasattr(sim, "_get_current_instruction_info")
-            else "UNKNOWN"
-        )
         log.append(
             {
                 "tick": tick,
                 "pc": state.pc,
-                "instruction": instr_info,
                 "registers": list(state.registers),
                 "flags": dict(state.flags),
                 "output": "".join(chr(c) for c in state.output_buffer[-5:] if 0 < c < 128),
@@ -66,7 +66,7 @@ def run_program(
         )
 
         if debug and tick % 100 == 0:
-            print(f"Tick {tick}: PC={state.pc}, ACC={state.acc}, Flags={state.flags}")
+            print(f"Tick {tick}: PC={state.pc}, Flags={state.flags}")
 
     # Вывод результатов
     output_text = "".join(chr(c) for c in sim.datapath.state.output_buffer if 0 < c < 128)
@@ -79,7 +79,6 @@ def run_program(
     print(f"Output:\n{output_text}")
     print("=" * 50)
 
-    # Регистры
     state = sim.datapath.state
     print("\nFinal Register State:")
     for i, reg in enumerate(state.registers):
@@ -101,23 +100,16 @@ def run_program(
             f.write(f"# Output: {output_text}\n\n")
             for entry in log:
                 f.write(
-                    f"Tick {entry['tick']:6d}: PC={entry['pc']:04X} | {entry['instruction']:20s} | R0={entry['registers'][0]:5d} R1={entry['registers'][1]:5d} | Out='{entry['output']}'\n"
+                    f"Tick {entry['tick']:6d}: PC={entry['pc']:04X} | R0={entry['registers'][0]:5d} R1={entry['registers'][1]:5d} | Out='{entry['output']}'\n"
                 )
         print(f"\nLog saved to: {log_path}")
-
-    # Сохранение вывода
-    if log_path:
-        output_path = log_path.replace(".log", ".output")
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(output_text)
-        print(f"Output saved to: {output_path}")
 
     return output_text, log
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python -m tools.run <program.bin> [input.txt] [--debug] [--log output.log]")
+        print("Usage: python tools/run.py <program.bin> [input.txt] [--debug] [--log output.log]")
         sys.exit(1)
 
     binary_file = sys.argv[1]

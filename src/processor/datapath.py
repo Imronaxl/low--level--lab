@@ -37,6 +37,16 @@ class DataPathState:
     # decoded immediate значение
     decoded_imm: int = 0
 
+    # decoded addressing mode
+    decoded_mod: int = 0
+
+    # decoded register operands
+    decoded_rd: int = 0
+    decoded_rs: int = 0
+
+    # ALU result register
+    alu_result: int = 0
+
     # Порты ввода-вывода
     ports: dict[int, int] = field(default_factory=dict)
 

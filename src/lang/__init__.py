@@ -2,7 +2,30 @@
 Модуль языка программирования alg.
 """
 
-from .ast import *
+from .ast import (
+    BinOp,
+    Block,
+    BreakStmt,
+    ContinueStmt,
+    Expr,
+    ForStmt,
+    FuncCall,
+    FuncDef,
+    Ident,
+    IfStmt,
+    InFuncCall,
+    Num,
+    OutFuncCall,
+    PrintStmt,
+    Program,
+    ReadStmt,
+    ReturnStmt,
+    Stmt,
+    StringLit,
+    UnaryOp,
+    VarDecl,
+    WhileStmt,
+)
 from .lexer import Lexer, LexerError, Token, TokenType, tokenize
 from .parser import ParseError, Parser, parse
 
@@ -23,6 +46,10 @@ __all__ = [
     "PrintStmt",
     "ReadStmt",
     "ReturnStmt",
+    "BreakStmt",
+    "ContinueStmt",
+    "InFuncCall",
+    "OutFuncCall",
     "Block",
     "Program",
     "Expr",

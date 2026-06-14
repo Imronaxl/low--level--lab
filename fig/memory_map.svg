@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 550" font-family="Arial, sans-serif">
+  <style>
+    text { font-family: Arial, sans-serif; }
+    .block { fill: none; stroke: black; stroke-width: 2; }
+    .block-label { font-size: 13px; font-weight: bold; text-anchor: middle; }
+    .sub-label { font-size: 10px; text-anchor: middle; }
+    .addr-label { font-size: 10px; text-anchor: end; }
+    .signal { font-size: 9px; fill: black; }
+    .data-line { stroke: black; stroke-width: 1.5; fill: none; }
+    .subsystem { fill: none; stroke: black; stroke-width: 2; }
+    .sub-header { font-size: 12px; font-weight: bold; text-anchor: middle; }
+    .dashed { stroke-dasharray: 6 3; }
+  </style>
+
+  <rect width="700" height="550" fill="white"/>
+
+  <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold">Memory Map — Von Neumann (64KB)</text>
+
+  <!-- Main memory block -->
+  <rect class="block" x="100" y="50" width="400" height="440"/>
+
+  <!-- Section: Interrupt Vector -->
+  <rect class="block" x="100" y="50" width="400" height="50"/>
+  <text class="block-label" x="300" y="72">Interrupt Vector Table</text>
+  <text class="sub-label" x="300" y="90" font-size="9">Reserved (0x0000-0x00FF)</text>
+
+  <!-- Section: Code -->
+  <rect class="block" x="100" y="110" width="400" height="80"/>
+  <text class="block-label" x="300" y="135">Code Section (.text)</text>
+  <text class="sub-label" x="300" y="155" font-size="10">Machine instructions (1-4 bytes each)</text>
+  <text class="sub-label" x="300" y="172" font-size="9">Padded to 3840 bytes (0xF00)</text>
+
+  <!-- Section: Data -->
+  <rect class="block" x="100" y="200" width="400" height="130"/>
+  <text class="block-label" x="300" y="225">Data Section (.data)</text>
+  <text class="sub-label" x="300" y="248" font-size="10">Global variables (4 bytes each)</text>
+  <text class="sub-label" x="300" y="268" font-size="9">String constants (C-strings, null-terminated)</text>
+  <text class="sub-label" x="300" y="288" font-size="9">Runtime slots (heap pointer, input buffer)</text>
+  <text class="sub-label" x="300" y="308" font-size="9">Sequential allocation, word-aligned</text>
+
+  <!-- Section: Stack -->
+  <rect class="block" x="100" y="340" width="400" height="70"/>
+  <text class="block-label" x="300" y="365">Stack</text>
+  <text class="sub-label" x="300" y="385" font-size="10">Grows downward from 0xFFFF</text>
+  <text class="sub-label" x="300" y="402" font-size="9">Local variables, temporaries</text>
+
+  <!-- Section: Free -->
+  <rect class="block" x="100" y="420" width="400" height="70"/>
+  <text class="block-label" x="300" y="450">Free Space</text>
+  <text class="sub-label" x="300" y="470" font-size="9">Between data and stack</text>
+
+  <!-- Address labels -->
+  <text class="addr-label" x="90" y="55">0x0000</text>
+  <text class="addr-label" x="90" y="110">0x0100</text>
+  <text class="addr-label" x="90" y="200">0x1000</text>
+  <text class="addr-label" x="90" y="340">0x8000</text>
+  <text class="addr-label" x="90" y="420">0xFFFF</text>
+
+  <!-- Address arrows -->
+  <line class="data-line" x1="95" y1="55" x2="95" y2="110"/>
+  <line class="data-line" x1="95" y1="110" x2="95" y2="200"/>
+  <line class="data-line" x1="95" y1="200" x2="95" y2="340"/>
+  <line class="data-line" x1="95" y1="340" x2="95" y2="420"/>
+
+  <!-- Side annotations -->
+  <rect class="subsystem" x="530" y="50" width="150" height="440"/>
+  <text class="sub-header" x="605" y="70">Access Properties</text>
+
+  <text class="signal" x="545" y="100" font-size="10">Code:</text>
+  <text class="signal" x="545" y="115" font-size="9">Read-only at runtime</text>
+  <text class="signal" x="545" y="130" font-size="9">Executed sequentially</text>
+
+  <text class="signal" x="545" y="170" font-size="10">Data:</text>
+  <text class="signal" x="545" y="185" font-size="9">Read/Write</text>
+  <text class="signal" x="545" y="200" font-size="9">Word-aligned (4 bytes)</text>
+  <text class="signal" x="545" y="215" font-size="9">Byte-addressable</text>
+
+  <text class="signal" x="545" y="255" font-size="10">Stack:</text>
+  <text class="signal" x="545" y="270" font-size="9">Grows downward</text>
+  <text class="signal" x="545" y="285" font-size="9">Push/Pop via SP</text>
+
+  <text class="signal" x="545" y="325" font-size="10">I/O (Port):</text>
+  <text class="signal" x="545" y="340" font-size="9">Port 0x01: STDIN</text>
+  <text class="signal" x="545" y="355" font-size="9">Port 0x02: STDOUT</text>
+  <text class="signal" x="545" y="370" font-size="9">IN/OUT instructions</text>
+
+  <text class="signal" x="545" y="410" font-size="10">Word size:</text>
+  <text class="signal" x="545" y="425" font-size="9">32 bits (4 bytes)</text>
+
+  <text class="signal" x="545" y="455" font-size="10">Address space:</text>
+  <text class="signal" x="545" y="470" font-size="9">2^16 = 64KB</text>
+
+  <!-- Bottom label -->
+  <rect class="block" x="100" y="500" width="400" height="30"/>
+  <text class="block-label" x="300" y="520" font-size="11">Unified address space — code and data in one memory array</text>
+</svg>

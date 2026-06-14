@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" font-family="Arial, sans-serif">
+  <style>
+    text { font-family: Arial, sans-serif; }
+    .block { fill: none; stroke: black; stroke-width: 2; }
+    .block-label { font-size: 14px; font-weight: bold; text-anchor: middle; }
+    .sub-label { font-size: 10px; text-anchor: middle; }
+    .signal { font-size: 9px; fill: black; }
+    .data-line { stroke: black; stroke-width: 1.5; fill: none; }
+    .subsystem { fill: none; stroke: black; stroke-width: 2; }
+    .sub-header { font-size: 12px; font-weight: bold; text-anchor: middle; }
+  </style>
+
+  <rect width="960" height="320" fill="white"/>
+
+  <text x="480" y="25" text-anchor="middle" font-size="16" font-weight="bold">Translation Pipeline</text>
+
+  <!-- === Source Code === -->
+  <rect class="block" x="20" y="70" width="110" height="70"/>
+  <text class="block-label" x="75" y="100">Source</text>
+  <text class="sub-label" x="75" y="120" font-size="10">(.alg file)</text>
+
+  <!-- Arrow: Source → Lexer -->
+  <line class="data-line" x1="130" y1="105" x2="170" y2="105" marker-end="url(#arr)"/>
+  <text class="signal" x="150" y="98" font-size="8">text</text>
+
+  <!-- === Lexer === -->
+  <rect class="block" x="170" y="70" width="110" height="70"/>
+  <text class="block-label" x="225" y="100">Lexer</text>
+  <text class="sub-label" x="225" y="120" font-size="10">Tokenize</text>
+  <text class="sub-label" x="225" y="135" font-size="9">lexer.py</text>
+
+  <!-- Arrow: Lexer → Parser -->
+  <line class="data-line" x1="280" y1="105" x2="320" y2="105" marker-end="url(#arr)"/>
+  <text class="signal" x="300" y="98" font-size="8">tokens</text>
+
+  <!-- === Parser === -->
+  <rect class="block" x="320" y="70" width="110" height="70"/>
+  <text class="block-label" x="375" y="100">Parser</text>
+  <text class="sub-label" x="375" y="120" font-size="10">Build AST</text>
+  <text class="sub-label" x="375" y="135" font-size="9">parser.py</text>
+
+  <!-- Arrow: Parser → CodeGen -->
+  <line class="data-line" x1="430" y1="105" x2="470" y2="105" marker-end="url(#arr)"/>
+  <text class="signal" x="450" y="98" font-size="8">AST</text>
+
+  <!-- === CodeGen === -->
+  <rect class="block" x="470" y="70" width="130" height="70"/>
+  <text class="block-label" x="535" y="100">CodeGen</text>
+  <text class="sub-label" x="535" y="120" font-size="10">AST → Machine Code</text>
+  <text class="sub-label" x="535" y="135" font-size="9">codegen.py</text>
+
+  <!-- Arrow: CodeGen → Image -->
+  <line class="data-line" x1="600" y1="105" x2="640" y2="105" marker-end="url(#arr)"/>
+  <text class="signal" x="620" y="98" font-size="8">bytes</text>
+
+  <!-- === ALG4 Image === -->
+  <rect class="block" x="640" y="70" width="130" height="70"/>
+  <text class="block-label" x="705" y="100">ALG4 Image</text>
+  <text class="sub-label" x="705" y="120" font-size="10">Header + Code + Data</text>
+  <text class="sub-label" x="705" y="135" font-size="9">image.py</text>
+
+  <!-- === Simulator === -->
+  <rect class="block" x="300" y="200" width="250" height="80"/>
+  <text class="block-label" x="425" y="230">Simulator (tick-accurate)</text>
+  <text class="sub-label" x="425" y="250" font-size="10">DataPath + ControlUnit</text>
+  <text class="sub-label" x="425" y="268" font-size="9">simulator.py + microcode.py</text>
+
+  <!-- Arrow: Image → Simulator -->
+  <path class="data-line" d="M705,140 L705,170 L550,170 L550,200" marker-end="url(#arr)"/>
+  <text class="signal" x="650" y="165" font-size="8">load binary</text>
+
+  <!-- === Output === -->
+  <rect class="block" x="600" y="200" width="120" height="80"/>
+  <text class="block-label" x="660" y="230">Output</text>
+  <text class="sub-label" x="660" y="250" font-size="10">stdout + log</text>
+  <text class="sub-label" x="660" y="268" font-size="9">run.py</text>
+
+  <!-- Arrow: Simulator → Output -->
+  <line class="data-line" x1="550" y1="240" x2="600" y2="240" marker-end="url(#arr)"/>
+  <text class="signal" x="575" y="233" font-size="8">output</text>
+
+  <!-- === CLI labels === -->
+  <rect class="block" x="20" y="200" width="200" height="80"/>
+  <text class="block-label" x="120" y="225">CLI Tools</text>
+  <text class="sub-label" x="120" y="245" font-size="10">compile.py — .alg → .bin</text>
+  <text class="sub-label" x="120" y="262" font-size="10">run.py — .bin → output</text>
+  <text class="sub-label" x="120" y="278" font-size="9">tools/</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="black"/>
+    </marker>
+  </defs>
+</svg>

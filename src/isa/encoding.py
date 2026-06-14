@@ -53,7 +53,7 @@ def encode_instruction(instr: Instruction) -> bytes:
     # Для IN/OUT и векторных инструкций используем отдельные диапазоны opcode
     # чтобы избежать конфликтов с MOD битами
     if opcode in [OpCode.VADD, OpCode.VSUB, OpCode.VMUL, OpCode.VCMP, OpCode.VLOAD, OpCode.VSTORE]:
-        # Векторные инструкции: opcode в диапазоне 0x50-0x55
+        # Векторные инструкции: opcode в диапазоне 0x58-0x5F
         # Используем полный opcode без модификации (MOD биты уже часть opcode)
         result.append(opcode.value)
 
@@ -235,8 +235,8 @@ def decode_instruction(data: bytes, address: int = 0) -> tuple[Instruction | Non
             ]
             return Instruction(opcode=opcode, operands=operands, address=address, length=3), 3
 
-    elif first_byte >= 0x50 and first_byte <= 0x5F:
-        # Векторные инструкции (0x50-0x57)
+    elif first_byte >= 0x58 and first_byte <= 0x5F:
+        # Векторные инструкции (0x58-0x5F)
         try:
             opcode = Opcode(first_byte)
         except ValueError:

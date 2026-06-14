@@ -55,15 +55,15 @@ class OpCode(IntEnum):
     IN = 0x40
     OUT = 0x41
 
-    # Векторные (0x50-0x5F) - должны быть < 64
-    VLOAD = 0x50
-    VSTORE = 0x51
-    VADD = 0x52
-    VSUB = 0x53
-    VMUL = 0x54
-    VDIV = 0x55
-    VCMP = 0x56
-    VSET = 0x57  # Заполнение вектора скаляром
+    # Векторные (0x58-0x5F) - должны быть < 64, избегаем коллизий с переходами
+    VLOAD = 0x58
+    VSTORE = 0x59
+    VADD = 0x5A
+    VSUB = 0x5B
+    VMUL = 0x5C
+    VDIV = 0x5D
+    VCMP = 0x5E
+    VSET = 0x5F  # Заполнение вектора скаляром
 
 
 @dataclass

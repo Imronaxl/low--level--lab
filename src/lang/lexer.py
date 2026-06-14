@@ -158,8 +158,14 @@ class Lexer:
     def read_number(self) -> Token:
         start_line, start_col = self.line, self.column
         result = ""
-        while self.peek() and self.peek().isdigit():
-            result += self.advance()
+        if self.peek() == "0" and self.peek_next() in ("x", "X"):
+            result += self.advance()  # '0'
+            result += self.advance()  # 'x' or 'X'
+            while self.peek() and self.peek() in "0123456789abcdefABCDEF":
+                result += self.advance()
+        else:
+            while self.peek() and self.peek().isdigit():
+                result += self.advance()
         return Token(TokenType.NUMBER, result, start_line, start_col)
 
     def read_string(self) -> Token:
