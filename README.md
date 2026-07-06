@@ -251,6 +251,5 @@ python tools/compile.py examples/01_hello/source.alg -o /tmp/hello.bin --lst /tm
 ├── .github/workflows/ci.yml
 ├── run_test.sh
 ├── pyproject.toml
-├── README.md
-└── DEFENSE.md        # Инструкция к защите
+└── README.md
 ```
