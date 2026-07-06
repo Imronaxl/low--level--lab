@@ -224,18 +224,14 @@ ruff check src/ tools/
 ## Пример использования
 
 ```bash
-# Компиляция
 python tools/compile.py examples/01_hello/source.alg -o /tmp/hello.bin
 
-# Запуск
 python tools/run.py /tmp/hello.bin
 
-# С входными данными
 python tools/compile.py examples/02_cat/source.alg -o /tmp/cat.bin
 echo -n "Hi" > /tmp/in.txt
 python tools/run.py /tmp/cat.bin /tmp/in.txt
 
-# Listing файл
 python tools/compile.py examples/01_hello/source.alg -o /tmp/hello.bin --lst /tmp/hello.lst
 ```
 
@@ -255,7 +251,7 @@ python tools/compile.py examples/01_hello/source.alg -o /tmp/hello.bin --lst /tm
 ├── tools/
 │   ├── compile.py    # Компилятор
 │   └── run.py        # Симулятор
-├── fig/              # Диаграммы (datapath, memory_map, pipeline, isa)
+├── fig/              # Диаграммы
 ├── .github/workflows/ci.yml
 ├── run_test.sh
 ├── pyproject.toml
